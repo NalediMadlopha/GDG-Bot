@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -18,12 +19,13 @@ import android.view.MotionEvent
 import android.view.View
 import com.naledimadlopha.gdgbot.app.R
 import com.naledimadlopha.gdgbot.app.model.BaseMessage
+import com.naledimadlopha.gdgbot.app.repository.MessageRepository
 import com.naledimadlopha.gdgbot.app.view.MessageListAdapter.Companion.SELF
 import kotlinx.android.synthetic.main.content_main.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MessageView {
 
     private val adapter: MessageListAdapter = MessageListAdapter(ArrayList())
     private lateinit var textToSpeech: TextToSpeech
@@ -124,6 +126,13 @@ class MainActivity : AppCompatActivity() {
         adapter.addMessage(BaseMessage(message, SELF, date))
         messageListRecyclerView.smoothScrollToPosition(adapter.itemCount - 1)
         messageEditorEditText.setText("")
+
+        PostMessageTask(this).execute(message, "en", "12345")
+    }
+
+    override fun updateMessages(message: BaseMessage) {
+        adapter.addMessage(message)
+        messageListRecyclerView.smoothScrollToPosition(adapter.itemCount - 1)
     }
 
     private fun checkPermission() {
@@ -135,6 +144,34 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    private class PostMessageTask(val view: MessageView) : AsyncTask<String, Void, BaseMessage>() {
+
+        override fun doInBackground(vararg params: String): BaseMessage {
+            val response = MessageRepository().postMessage(params[0], params[1], params[2])
+            val body = response.body()!!
+            val result = body.getAsJsonObject(RESULT)
+
+            val timeStamp = body.get(TIME_STAMP).asString
+            val source = result.get(SOURCE).asString
+            val speech = result.get(SPEECH).asString
+
+            return BaseMessage(speech, source, timeStamp)
+        }
+
+        override fun onPostExecute(result: BaseMessage) {
+            super.onPostExecute(result)
+            view.updateMessages(result)
+        }
+
+    }
+
+    companion object {
+        private const val TIME_STAMP = "timestamp"
+        private const val RESULT = "result"
+        private const val SPEECH = "speech"
+        private const val SOURCE = "source"
     }
 
 }
