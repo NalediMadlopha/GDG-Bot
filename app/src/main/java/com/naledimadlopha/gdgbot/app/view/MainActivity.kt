@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -19,10 +18,8 @@ import android.view.MotionEvent
 import android.view.View
 import com.naledimadlopha.gdgbot.app.R
 import com.naledimadlopha.gdgbot.app.model.BaseMessage
-import com.naledimadlopha.gdgbot.app.repository.MessageRepository
-import com.naledimadlopha.gdgbot.app.view.MessageListAdapter.Companion.SELF
+import com.naledimadlopha.gdgbot.app.viewmodel.MessageViewModel
 import kotlinx.android.synthetic.main.content_main.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity(), MessageView {
@@ -31,8 +28,7 @@ class MainActivity : AppCompatActivity(), MessageView {
     private lateinit var textToSpeech: TextToSpeech
     private lateinit var speechRecognizer: SpeechRecognizer
     private lateinit var speechRecognizerIntent: Intent
-
-    private lateinit var simpleDateFormat: SimpleDateFormat
+    private lateinit var viewModel: MessageViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,10 +38,10 @@ class MainActivity : AppCompatActivity(), MessageView {
         setupSpeechRecognizerIntent()
         setupUI()
 
+        viewModel = MessageViewModel(this)
     }
 
     private fun setupUI() {
-        simpleDateFormat = SimpleDateFormat(getString(R.string.message_time_format), Locale.getDefault())
         textToSpeech = TextToSpeech(this, null)
 
         messageListRecyclerView.adapter = adapter
@@ -75,7 +71,7 @@ class MainActivity : AppCompatActivity(), MessageView {
                 val matches = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
 
                 if (matches != null && matches.isNotEmpty()) {
-                    postMessage(matches.first())
+                    viewModel.postMessage(matches.first())
                 }
             }
 
@@ -118,16 +114,9 @@ class MainActivity : AppCompatActivity(), MessageView {
         val message = messageEditorEditText.text.toString()
 
         if (!TextUtils.isEmpty(message)) {
-            postMessage(message)
+            messageEditorEditText.setText("")
+            viewModel.postMessage(message)
         }
-    }
-
-    private fun postMessage(message: String, date: String = simpleDateFormat.format(Date())) {
-        adapter.addMessage(BaseMessage(message, SELF, date))
-        messageListRecyclerView.smoothScrollToPosition(adapter.itemCount - 1)
-        messageEditorEditText.setText("")
-
-        PostMessageTask(this).execute(message, "en", "12345")
     }
 
     override fun updateMessages(message: BaseMessage) {
@@ -144,34 +133,6 @@ class MainActivity : AppCompatActivity(), MessageView {
                 finish()
             }
         }
-    }
-
-    private class PostMessageTask(val view: MessageView) : AsyncTask<String, Void, BaseMessage>() {
-
-        override fun doInBackground(vararg params: String): BaseMessage {
-            val response = MessageRepository().postMessage(params[0], params[1], params[2])
-            val body = response.body()!!
-            val result = body.getAsJsonObject(RESULT)
-
-            val timeStamp = body.get(TIME_STAMP).asString
-            val source = result.get(SOURCE).asString
-            val speech = result.get(SPEECH).asString
-
-            return BaseMessage(speech, source, timeStamp)
-        }
-
-        override fun onPostExecute(result: BaseMessage) {
-            super.onPostExecute(result)
-            view.updateMessages(result)
-        }
-
-    }
-
-    companion object {
-        private const val TIME_STAMP = "timestamp"
-        private const val RESULT = "result"
-        private const val SPEECH = "speech"
-        private const val SOURCE = "source"
     }
 
 }
