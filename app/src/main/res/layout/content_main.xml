@@ -71,7 +71,8 @@
             android:background="?attr/selectableItemBackground"
             android:tint="@color/colorPrimaryDark"
             android:clickable="true"
-            android:focusable="true" />
+            android:focusable="true"
+            android:onClick="sendButtonClicked" />
 
     </LinearLayout>
 

@@ -10,4 +10,7 @@
     <string name="message_editor_listening_hint">Listening…</string>
     <string name="message_editor_send_button_text">SEND</string>
 
+    <!-- Message -->
+    <string name="message_time_format">HH:mm</string>
+
 </resources>
