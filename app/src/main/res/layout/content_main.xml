@@ -9,7 +9,7 @@
     tools:showIn="@layout/activity_main">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/message_list_recycler_view"
+        android:id="@+id/messageListRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="@dimen/message_list_recycler_view_bottom_padding"
@@ -22,12 +22,12 @@
         android:layout_height="@dimen/default_micro"
         android:background="@color/message_list_background_color"
         android:layout_marginBottom="@dimen/default_size"
-        app:layout_constraintBottom_toTopOf="@+id/message_editor_layout"
+        app:layout_constraintBottom_toTopOf="@+id/messageEditorLayout"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
     <LinearLayout
-        android:id="@+id/message_editor_layout"
+        android:id="@+id/messageEditorLayout"
         android:layout_width="@dimen/default_size"
         android:layout_height="wrap_content"
         android:minHeight="@dimen/message_editor_layout_min_height"
@@ -38,7 +38,7 @@
         app:layout_constraintLeft_toLeftOf="parent">
 
         <EditText
-            android:id="@+id/message_editor_edit_text"
+            android:id="@+id/messageEditorEditText"
             android:hint="@string/message_editor_enter_message_hint"
             android:background="@android:color/transparent"
             android:layout_gravity="center"
@@ -50,7 +50,7 @@
             android:maxLines="6" />
 
         <ImageView
-            android:id="@+id/message_record_button"
+            android:id="@+id/messageRecordButton"
             android:layout_width="@dimen/message_editor_send_button_width"
             android:layout_height="@dimen/message_editor_send_button_height"
             android:padding="@dimen/default_small"
@@ -62,7 +62,7 @@
             android:focusable="true" />
 
         <ImageView
-            android:id="@+id/message_editor_send_button"
+            android:id="@+id/messageEditorSendButton"
             android:layout_width="@dimen/message_editor_send_button_width"
             android:layout_height="@dimen/message_editor_send_button_height"
             android:padding="@dimen/default_small"
