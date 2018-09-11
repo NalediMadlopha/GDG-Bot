@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+
+    <!-- Default -->
+    <dimen name="default_size">0dp</dimen>
+    <dimen name="default_micro">2dp</dimen>
+    <dimen name="default_small">4dp</dimen>
+    <dimen name="default_medium">8dp</dimen>
+    <dimen name="default_large">16dp</dimen>
+
+    <!-- General -->
     <dimen name="appbar_layout_elevation">4dp</dimen>
+
+    <!-- Message List -->
+    <dimen name="message_list_recycler_view_bottom_padding">50dp</dimen>
+
+    <!-- Message Editor -->
+    <dimen name="message_editor_layout_min_height">48dp</dimen>
+    <dimen name="message_editor_send_button_text_size">14sp</dimen>
+    <dimen name="message_editor_send_button_width">35dp</dimen>
+    <dimen name="message_editor_send_button_height">35dp</dimen>
+
+    <!-- Message Item -->
+    <dimen name="message_item_body_text_max_width">240dp</dimen>
+    <dimen name="message_item_radius_size">20dp</dimen>
+    <dimen name="message_time_stamp_text_size">10sp</dimen>
 
 </resources>

@@ -3,4 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="message_list_background_color">#dfdfdf</color>
+    <color name="message_item_background_color_blue">#4683F6</color>
+    <color name="message_item_background_color_grey">#EEF1F6</color>
+
 </resources>

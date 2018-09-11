@@ -1,4 +1,13 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- General -->
     <string name="app_name">GDG Bot</string>
     <string name="gdg_johannesburg">GDG Johannesburg</string>
+    <string name="app_bar_scrolling_view_behavior" translatable="false" tools:ignore="PrivateResource">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
+
+    <!-- Message Editor -->
+    <string name="message_editor_enter_message_hint">Enter message</string>
+    <string name="message_editor_listening_hint">Listening…</string>
+    <string name="message_editor_send_button_text">SEND</string>
+
 </resources>
