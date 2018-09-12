@@ -16,8 +16,10 @@ import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.MotionEvent
 import android.view.View
+import android.widget.Toast
 import com.naledimadlopha.gdgbot.app.R
 import com.naledimadlopha.gdgbot.app.model.BaseMessage
+import com.naledimadlopha.gdgbot.app.util.Utils.Companion.isConnected
 import com.naledimadlopha.gdgbot.app.viewmodel.MessageViewModel
 import kotlinx.android.synthetic.main.content_main.*
 import java.util.*
@@ -71,7 +73,11 @@ class MainActivity : AppCompatActivity(), MessageView {
                 val matches = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
 
                 if (matches != null && matches.isNotEmpty()) {
-                    viewModel.postMessage(matches.first())
+                    if (isConnected(applicationContext)) {
+                        viewModel.postMessage(matches.first())
+                    } else {
+                        Toast.makeText(applicationContext, "No internet connection", Toast.LENGTH_LONG).show()
+                    }
                 }
             }
 
@@ -127,8 +133,12 @@ class MainActivity : AppCompatActivity(), MessageView {
         val message = messageEditorEditText.text.toString()
 
         if (!TextUtils.isEmpty(message)) {
-            messageEditorEditText.setText("")
-            viewModel.postMessage(message)
+            if (isConnected(this)) {
+                messageEditorEditText.setText("")
+                viewModel.postMessage(message)
+            } else {
+                Toast.makeText(this, "No internet connection", Toast.LENGTH_LONG).show()
+            }
         }
     }
 

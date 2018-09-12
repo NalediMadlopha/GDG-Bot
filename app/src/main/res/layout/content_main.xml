@@ -57,7 +57,7 @@
             android:layout_gravity="center"
             android:src="@drawable/ic_mic_black"
             android:background="?attr/selectableItemBackground"
-            android:tint="@color/colorPrimaryDark"
+            android:tint="@color/colorAccent"
             android:clickable="true"
             android:focusable="true" />
 
@@ -69,7 +69,7 @@
             android:layout_gravity="center"
             android:src="@drawable/ic_send_black"
             android:background="?attr/selectableItemBackground"
-            android:tint="@color/colorPrimaryDark"
+            android:tint="@color/colorAccent"
             android:clickable="true"
             android:focusable="true"
             android:onClick="sendButtonClicked" />
