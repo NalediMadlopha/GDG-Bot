@@ -10,7 +10,7 @@ import retrofit2.http.Query
 interface Service {
 
     @Headers("Authorization:Bearer " + BuildConfig.GDG_BOT_DIALOGFLOW_API_KEY, "Content-Type:application/json")
-    @GET("https://api.dialogflow.com/v1/query")
+    @GET("/query")
     fun postMessage(@Query("query") message: String, @Query("lang") lang: String, @Query("sessionId") sessionId: String): Call<JsonObject>
 
 }
