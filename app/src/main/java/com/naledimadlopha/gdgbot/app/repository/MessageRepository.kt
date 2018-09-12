@@ -12,13 +12,17 @@ class MessageRepository {
     fun postMessage(message: String, lang: String, sessionId: String): Response<JsonObject> {
 
         val service = Retrofit.Builder()
-                .baseUrl("https://api.dialogflow.com/v1/")
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create<Service>(Service::class.java)
 
         return service.postMessage(message, lang, sessionId).execute()
 
+    }
+
+    companion object {
+        private const val BASE_URL = "https://api.dialogflow.com/v1/"
     }
 
 }

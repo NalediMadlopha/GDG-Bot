@@ -85,18 +85,22 @@ class MainActivity : AppCompatActivity(), MessageView {
         })
     }
 
+    private fun readMessage(text: String) {
+        textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1")
+    }
+
     private fun setRecordButtonTouchListener() {
         messageRecordButton.setOnTouchListener { v, event ->
             when (event?.action) {
                 MotionEvent.ACTION_UP -> {
                     speechRecognizer.stopListening()
-                    messageEditorEditText.setText("")
+                    messageEditorEditText.text = null
                     messageEditorEditText.hint = getString(R.string.message_editor_enter_message_hint)
                 }
 
                 MotionEvent.ACTION_DOWN -> {
                     speechRecognizer.startListening(speechRecognizerIntent)
-                    messageEditorEditText.setText("")
+                    messageEditorEditText.text = null
                     messageEditorEditText.hint = getString(R.string.message_editor_listening_hint)
                 }
             }
@@ -110,6 +114,15 @@ class MainActivity : AppCompatActivity(), MessageView {
         textToSpeech.shutdown()
     }
 
+    override fun updateMessages(message: BaseMessage) {
+        adapter.addMessage(message)
+        messageListRecyclerView.smoothScrollToPosition(adapter.itemCount - 1)
+
+        if (message.sender != "self") {
+            readMessage(message.message)
+        }
+    }
+
     fun sendButtonClicked(view: View) {
         val message = messageEditorEditText.text.toString()
 
@@ -117,11 +130,6 @@ class MainActivity : AppCompatActivity(), MessageView {
             messageEditorEditText.setText("")
             viewModel.postMessage(message)
         }
-    }
-
-    override fun updateMessages(message: BaseMessage) {
-        adapter.addMessage(message)
-        messageListRecyclerView.smoothScrollToPosition(adapter.itemCount - 1)
     }
 
     private fun checkPermission() {
