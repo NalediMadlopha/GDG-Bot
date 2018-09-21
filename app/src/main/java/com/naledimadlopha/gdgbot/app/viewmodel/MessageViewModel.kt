@@ -8,7 +8,7 @@ import com.naledimadlopha.gdgbot.app.view.MessageView
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MessageViewModel(private var view: MessageView) : ViewModel() {
+class MessageViewModel(private var view: MessageView) {
 
     fun postMessage(message: String) {
         view.updateMessages(BaseMessage(message, SELF, simpleDateFormat.format(Date())))
