@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity(), MessageView {
                     if (isConnected(applicationContext)) {
                         viewModel.postMessage(matches.first())
                     } else {
-                        Toast.makeText(applicationContext, "No internet connection", Toast.LENGTH_LONG).show()
+                        Toast.makeText(applicationContext, getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show()
                     }
                 }
             }
@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity(), MessageView {
     }
 
     private fun readMessage(text: String) {
-        textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, "id1")
+        textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, UTTERANCE_ID)
     }
 
     private fun setRecordButtonTouchListener() {
@@ -124,7 +124,7 @@ class MainActivity : AppCompatActivity(), MessageView {
         adapter.addMessage(message)
         messageListRecyclerView.smoothScrollToPosition(adapter.itemCount - 1)
 
-        if (message.sender != "self") {
+        if (message.sender != SELF) {
             readMessage(message.message)
         }
     }
@@ -137,7 +137,7 @@ class MainActivity : AppCompatActivity(), MessageView {
                 messageEditorEditText.setText("")
                 viewModel.postMessage(message)
             } else {
-                Toast.makeText(this, "No internet connection", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -151,6 +151,11 @@ class MainActivity : AppCompatActivity(), MessageView {
                 finish()
             }
         }
+    }
+
+    companion object {
+        private const val SELF = "self"
+        private const val UTTERANCE_ID = "id1"
     }
 
 }
